@@ -1,16 +1,31 @@
-# This is a sample Python script.
+import os
+from dotenv import load_dotenv
+from imapclient import IMAPClient
+import email
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+load_dotenv()
+#now have access to uid and pass and monitoremail
+
+host = 'imap.gmail.com'
+user = os.getenv("uid")
+password = os.getenv("pass")
+ssl = True
+
+server = IMAPClient(host, use_uid=True, ssl=ssl)
+server.login(user, password)
+server.select_folder("INBOX")
+messages = server.search(['NOT','DELETED', u'FLAGGED'])
+
+for uid, message_data in server.fetch(messages, "RFC822").items():
+        email_message = email.message_from_bytes(message_data[b"RFC822"])
+        print(uid, email_message.get("From"), email_message.get("Subject"))
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+#for msgid, data in response.items():
+#
+#        parsedEmail = email.message_from_string('RFC822')
+#        body = email.message_from_string('BODY[TEXT]')
+#        #parsedBody = parsedEmail.get_payload(0)
+#        print(parsedEmail)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+server.logout()
