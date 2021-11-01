@@ -136,6 +136,11 @@ if __name__ == "__main__":
 
         #COLORS
         White = "#FFFFFF"
+        Pink = "#F52FE4"
+        LightBlue = "#2DE0F7"
+        DarkBlue = "#0F22F2"
+        Yellow = "#FCF005"
+        Green = "#0DFC05"
 
         #INFOTXT
         status = str(iter) + "/" + str(len)
