@@ -79,7 +79,7 @@ if __name__ == "__main__":
     height = disp.width  # we swap height/width to rotate it to landscape!
     width = disp.height
     image = Image.new("RGB", (width, height))
-    rotation = 180
+    rotation = 90
 
     # Get drawing object to draw on image.
     draw = ImageDraw.Draw(image)
@@ -115,14 +115,14 @@ if __name__ == "__main__":
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
         #check button values
-        if buttonA.value:
+        if not buttonA.value:
             if iter >0:
                 iter -= 1
-                time.sleep(1)
-        if buttonB.value:
+                print("buttonA press")
+        if not buttonB.value:
             if iter+1 < len:
                 iter += 1
-                time.sleep(1)
+                print("buttonB press")
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "hostname -I | cut -d' ' -f1"
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         Green = "#0DFC05"
 
         #INFOTXT
-        status = str(iter) + "/" + str(len)
+        status = "Message: "+ str(iter+1) + "/" + str(len)
 
         # Plan lines of text.
         y = top
@@ -160,12 +160,21 @@ if __name__ == "__main__":
         space = " "
         draw.text((x, y), space, font=font, fill=White)
         y += font.getsize(space)[1]
-        # IP: xxx.xxx.x.x
-        draw.text((x, y), IP, font=font, fill=White)
-        y += font.getsize(IP)[1]
+        # <Message> //spacer?
+        draw.text((x, y), space, font=font, fill=White)
+        y += font.getsize(space)[1]
+        # <Message> //spacer?
+        draw.text((x, y), space, font=font, fill=White)
+        y += font.getsize(space)[1]
+        # <Message> //spacer?
+        draw.text((x, y), space, font=font, fill=White)
+        y += font.getsize(space)[1]
         # Message: ##/##
         draw.text((x, y), status , font=font, fill=White)
         y += font.getsize(status)[1]
+        # IP: xxx.xxx.x.x
+        draw.text((x, y), IP, font=font, fill=White)
+        y += font.getsize(IP)[1]
         # <- Left Right -> A, B
         inst = "<- Left | Right ->"
         draw.text((x, y), inst, font=font, fill=White)
