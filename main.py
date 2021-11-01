@@ -118,9 +118,11 @@ if __name__ == "__main__":
         if buttonA.value:
             if iter >0:
                 iter -= 1
+                time.sleep(1)
         if buttonB.value:
             if iter+1 < len:
                 iter += 1
+                time.sleep(1)
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "hostname -I | cut -d' ' -f1"
