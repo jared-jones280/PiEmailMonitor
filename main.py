@@ -69,7 +69,11 @@ if __name__ == "__main__":
         x_offset=0,
         y_offset=80,
     )
-
+    #create buttons
+    buttonA = digitalio.DigitalInOut(board.D23)
+    buttonB = digitalio.DigitalInOut(board.D24)
+    buttonA.switch_to_input()
+    buttonB.switch_to_input()
     # Create blank image for drawing.
     # Make sure to create image with mode 'RGB' for full color.
     height = disp.width  # we swap height/width to rotate it to landscape!
@@ -103,11 +107,20 @@ if __name__ == "__main__":
 
     messages = getMessages(host,user,password)
     print(messages)
+    len = len(messages)
+    iter = len-1
 
     while True:
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
+        #check button values
+        if buttonA.value:
+            if iter >0:
+                iter -= 1
+        if buttonB.value:
+            if iter+1 < len:
+                iter += 1
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "hostname -I | cut -d' ' -f1"
@@ -121,17 +134,47 @@ if __name__ == "__main__":
         cmd = "cat /sys/class/thermal/thermal_zone0/temp |  awk '{printf \"CPU Temp: %.1f C\", $(NF-0) / 1000}'"  # pylint: disable=line-too-long
         Temp = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-        # Write four lines of text.
+        #COLORS
+        White = "#FFFFFF"
+
+        #INFOTXT
+        status = str(iter) + "/" + str(len)
+
+        # Plan lines of text.
         y = top
-        draw.text((x, y), IP, font=font, fill="#FFFFFF")
+        # Lauren,
+        l1= "Lauren, "
+        draw.text((x, y), l1, font=font, fill=White)
+        y += font.getsize(l1)[1]
+        # <Message>
+        draw.text((x, y), messages[iter], font=font, fill=White)
+        y += font.getsize(messages[iter])[1]
+        # <Message> //spacer?
+        space = " "
+        draw.text((x, y), space, font=font, fill=White)
+        y += font.getsize(space)[1]
+        # IP: xxx.xxx.x.x
+        draw.text((x, y), IP, font=font, fill=White)
         y += font.getsize(IP)[1]
-        draw.text((x, y), CPU, font=font, fill="#FFFF00")
-        y += font.getsize(CPU)[1]
-        draw.text((x, y), MemUsage, font=font, fill="#00FF00")
-        y += font.getsize(MemUsage)[1]
-        draw.text((x, y), Disk, font=font, fill="#0000FF")
-        y += font.getsize(Disk)[1]
-        draw.text((x, y), Temp, font=font, fill="#FF00FF")
+        # Message: ##/##
+        draw.text((x, y), status , font=font, fill=White)
+        y += font.getsize(status)[1]
+        # <- Left Right -> A, B
+        inst = "<- Left | Right ->"
+        draw.text((x, y), inst, font=font, fill=White)
+        y += font.getsize(inst)[1]
+
+        #Lines of text
+        #y = top
+        #draw.text((x, y), IP, font=font, fill="#FFFFFF")
+        #y += font.getsize(IP)[1]
+        #draw.text((x, y), CPU, font=font, fill="#FFFF00")
+        #y += font.getsize(CPU)[1]
+        #draw.text((x, y), MemUsage, font=font, fill="#00FF00")
+        #y += font.getsize(MemUsage)[1]
+        #draw.text((x, y), Disk, font=font, fill="#0000FF")
+        #y += font.getsize(Disk)[1]
+        #draw.text((x, y), Temp, font=font, fill="#FF00FF")
 
         # Display image.
         disp.image(image, rotation)
