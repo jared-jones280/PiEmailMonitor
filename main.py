@@ -176,7 +176,7 @@ if __name__ == "__main__":
         draw.text((x, y), IP, font=font, fill=White)
         y += font.getsize(IP)[1]
         # <- Left Right -> A, B
-        inst = "<- Left | Right ->"
+        inst = "    <- Prev | Next ->"
         draw.text((x, y), inst, font=font, fill=White)
         y += font.getsize(inst)[1]
 
