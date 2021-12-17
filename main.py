@@ -34,6 +34,8 @@ def getMessages(host,user,password):
     server.logout()
     return m
 
+    
+
 if __name__ == "__main__":
 
     #SETUP FOR MAIL CLIENT
@@ -107,10 +109,32 @@ if __name__ == "__main__":
 
     messages = getMessages(host,user,password)
     print(messages)
-    len = len(messages)
-    iter = len-1
+    leng = len(messages)
+    iter = leng-1
+    idleCount = 0
 
     while True:
+        #print(idleCount)
+        #if(idleCount % 10 == 0):
+        #   print('10 seconds passed w/ no input')
+        
+        #check if any button inputs in last 30 seconds
+        if(idleCount == 30):
+            backlight.value = False
+            #if button press stop waiting, fetch new messages, turn on display
+            while(True):
+                if not buttonA.value:
+                    break
+                if not buttonB.value:
+                    break
+            print('checking for new messages')
+            messages = getMessages(host,user,password)
+            print(messages)
+            leng = len(messages)
+            iter = leng-1
+            idleCount == 0
+            backlight.value = True
+
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
@@ -119,10 +143,12 @@ if __name__ == "__main__":
             if iter >0:
                 iter -= 1
                 print("buttonA press")
+                idleCount = 0
         if not buttonB.value:
-            if iter+1 < len:
+            if iter+1 < leng:
                 iter += 1
                 print("buttonB press")
+                idleCount = 0
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "hostname -I | cut -d' ' -f1"
@@ -145,7 +171,7 @@ if __name__ == "__main__":
         Green = "#0DFC05"
 
         #INFOTXT
-        status = "Message: "+ str(iter+1) + "/" + str(len)
+        status = "Message: "+ str(iter+1) + "/" + str(leng)
 
         # Plan lines of text.
         y = top
@@ -194,4 +220,5 @@ if __name__ == "__main__":
 
         # Display image.
         disp.image(image, rotation)
+        idleCount += 1
         time.sleep(0.1)
