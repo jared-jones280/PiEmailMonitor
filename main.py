@@ -153,14 +153,14 @@ if __name__ == "__main__":
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "hostname -I | cut -d' ' -f1"
         IP = "IP: " + subprocess.check_output(cmd, shell=True).decode("utf-8")
-        cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
-        CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
-        cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'"
-        MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
-        cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
-        Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
-        cmd = "cat /sys/class/thermal/thermal_zone0/temp |  awk '{printf \"CPU Temp: %.1f C\", $(NF-0) / 1000}'"  # pylint: disable=line-too-long
-        Temp = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        #cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
+        #CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        #cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'"
+        #MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        #cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
+        #Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        #cmd = "cat /sys/class/thermal/thermal_zone0/temp |  awk '{printf \"CPU Temp: %.1f C\", $(NF-0) / 1000}'"  # pylint: disable=line-too-long
+        #Temp = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
         #COLORS
         White = "#FFFFFF"
@@ -173,6 +173,11 @@ if __name__ == "__main__":
         #INFOTXT
         status = "Message: "+ str(iter+1) + "/" + str(leng)
 
+        #Dividing Message
+        lines = messages[iter].split('#')
+        while(len(lines)<5):
+            lines.append(' ')
+
         # Plan lines of text.
         y = top
         # Lauren,
@@ -180,20 +185,20 @@ if __name__ == "__main__":
         draw.text((x, y), l1, font=font, fill=White)
         y += font.getsize(l1)[1]
         # <Message>
-        draw.text((x, y), messages[iter], font=font, fill=White)
+        draw.text((x, y), lines[0], font=font, fill=White)
         y += font.getsize(messages[iter])[1]
         # <Message> //spacer?
         space = " "
-        draw.text((x, y), space, font=font, fill=White)
+        draw.text((x, y), lines[1], font=font, fill=White)
         y += font.getsize(space)[1]
         # <Message> //spacer?
-        draw.text((x, y), space, font=font, fill=White)
+        draw.text((x, y), lines[2], font=font, fill=White)
         y += font.getsize(space)[1]
         # <Message> //spacer?
-        draw.text((x, y), space, font=font, fill=White)
+        draw.text((x, y), lines[3], font=font, fill=White)
         y += font.getsize(space)[1]
         # <Message> //spacer?
-        draw.text((x, y), space, font=font, fill=White)
+        draw.text((x, y), lines[4], font=font, fill=White)
         y += font.getsize(space)[1]
         # Message: ##/##
         draw.text((x, y), status , font=font, fill=White)
