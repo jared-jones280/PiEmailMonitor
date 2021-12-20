@@ -81,7 +81,7 @@ if __name__ == "__main__":
     height = disp.width  # we swap height/width to rotate it to landscape!
     width = disp.height
     image = Image.new("RGB", (width, height))
-    rotation = 90
+    rotation = 0
 
     # Get drawing object to draw on image.
     draw = ImageDraw.Draw(image)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     backlight.value = True
 
     messages = getMessages(host,user,password)
-    print(messages)
+    #print(messages)
     leng = len(messages)
     iter = leng-1
     idleCount = 0
@@ -127,9 +127,9 @@ if __name__ == "__main__":
                     break
                 if not buttonB.value:
                     break
-            print('checking for new messages')
+            #print('checking for new messages')
             messages = getMessages(host,user,password)
-            print(messages)
+            #print(messages)
             leng = len(messages)
             iter = leng-1
             idleCount == 0
@@ -142,12 +142,12 @@ if __name__ == "__main__":
         if not buttonA.value:
             if iter >0:
                 iter -= 1
-                print("buttonA press")
+                #print("buttonA press")
                 idleCount = 0
         if not buttonB.value:
             if iter+1 < leng:
                 iter += 1
-                print("buttonB press")
+                #print("buttonB press")
                 idleCount = 0
         # Shell scripts for system monitoring from here:
         # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
@@ -186,20 +186,20 @@ if __name__ == "__main__":
         y += font.getsize(l1)[1]
         # <Message>
         draw.text((x, y), lines[0], font=font, fill=White)
-        y += font.getsize(messages[iter])[1]
+        y += font.getsize(lines[0])[1]
         # <Message> //spacer?
         space = " "
         draw.text((x, y), lines[1], font=font, fill=White)
-        y += font.getsize(space)[1]
+        y += font.getsize(lines[1])[1]
         # <Message> //spacer?
         draw.text((x, y), lines[2], font=font, fill=White)
-        y += font.getsize(space)[1]
+        y += font.getsize(lines[2])[1]
         # <Message> //spacer?
         draw.text((x, y), lines[3], font=font, fill=White)
-        y += font.getsize(space)[1]
+        y += font.getsize(lines[3])[1]
         # <Message> //spacer?
         draw.text((x, y), lines[4], font=font, fill=White)
-        y += font.getsize(space)[1]
+        y += font.getsize(lines[4])[1]
         # Message: ##/##
         draw.text((x, y), status , font=font, fill=White)
         y += font.getsize(status)[1]
@@ -207,7 +207,7 @@ if __name__ == "__main__":
         draw.text((x, y), IP, font=font, fill=White)
         y += font.getsize(IP)[1]
         # <- Left Right -> A, B
-        inst = "    <- Prev | Next ->"
+        inst = "    v Prev | Next ^"
         draw.text((x, y), inst, font=font, fill=White)
         y += font.getsize(inst)[1]
 
