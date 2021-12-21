@@ -108,7 +108,7 @@ if __name__ == "__main__":
     backlight.value = True
 
     messages = getMessages(host,user,password)
-    #print(messages)
+    print(messages)
     leng = len(messages)
     iter = leng-1
     idleCount = 0
@@ -116,10 +116,11 @@ if __name__ == "__main__":
     while True:
         #print(idleCount)
         #if(idleCount % 10 == 0):
-        #   print('10 seconds passed w/ no input')
+           #print('10 seconds passed w/ no input')
         
         #check if any button inputs in last 30 seconds
         if(idleCount == 30):
+            #print('got to 30')
             backlight.value = False
             #if button press stop waiting, fetch new messages, turn on display
             while(True):
@@ -127,12 +128,13 @@ if __name__ == "__main__":
                     break
                 if not buttonB.value:
                     break
+                time.sleep(1)
             #print('checking for new messages')
             messages = getMessages(host,user,password)
             #print(messages)
             leng = len(messages)
             iter = leng-1
-            idleCount == 0
+            idleCount = 0
             backlight.value = True
 
         # Draw a black filled box to clear the image.
